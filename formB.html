@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form A</title>
+  <link rel="stylesheet" href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Form A</h1>
+    <form id="myForm">
+      <div class="mb-3">
+        <label for="numericInput" class="form-label">Data Numerik:</label>
+        <input type="number" class="form-control" id="numericInput" name="numericInput" required>
+      </div>
+      <div class="mb-3">
+        <label for="textInput" class="form-label">Data Teks:</label>
+        <input type="text" class="form-control" id="textInput" name="textInput" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div id="resultTable" style="display: none;">
+      <h2>Result</h2>
+      <table id="dataTable" class="table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#myForm').submit(function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        var idx = $("#numericInput").val();
+        var txt = $("#textInput").val();
+        $.ajax({
+          url: 'C.php',
+          type: 'POST',
+          data: {idx: idx, txt: txt},
+          dataType: 'json',
+          success: function(response) {
+          $.each(response, function (index, item) {
+            var row = $("<tr>");
+              row.append($("<td>").text(index+1));
+              row.append($("<td>").text(item));  
+            tableBody.append(row);
+          });
+          $("#result").slideDown();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

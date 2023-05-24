@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form A</title>
+    <link rel="stylesheet" href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8e5e5;
+      }
+
+      .container {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 50px;
+      }
+
+      h1 {
+        color: #c7254e;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .form-control {
+        border-color: #c7254e;
+      }
+
+      .btn-primary {
+        background-color: #c7254e;
+        border-color: #c7254e;
+      }
+
+      .btn-primary:hover {
+        background-color: #ab2143;
+        border-color: #ab2143;
+      }
+
+      #result {
+        display: none;
+        margin-top: 50px;
+      }
+
+      h2 {
+        color: #c7254e;
+        margin-bottom: 20px;
+      }
+
+      table {
+        margin-top: 20px;
+      }
+
+      th {
+        color: #c7254e;
+      }
+
+      td {
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Form A</h1>
+      <form id="myForm">
+        <div class="mb-3">
+          <label for="numberInput" class="form-label">Angka:</label>
+          <input type="number" class="form-control" id="numberInput" required />
+        </div>
+        <div class="mb-3">
+          <label for="textInput" class="form-label">Teks:</label>
+          <input type="text" class="form-control" id="textInput" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <div id="result">
+        <h2>Response:</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Teks</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#myForm").submit(function (e) {
+          e.preventDefault();
+
+          var number = $("#numberInput").val();
+          var text = $("#textInput").val();
+
+          $.ajax({
+            url: "D.php",
+            method: "POST",
+            data: { number: number, text: text },
+            dataType: "json",
+            success: function (response) {
+              var tableBody = $("#tableBody");
+              tableBody.empty();
+
+              $.each(response, function (index, item) {
+                var row = $("<tr>");
+                row.append($("<td>").text(index + 1));
+                row.append($("<td>").text(item));
+                tableBody.append(row);
+              });
+
+              $("#result").slideDown();
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
