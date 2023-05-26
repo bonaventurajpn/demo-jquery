@@ -2,43 +2,103 @@
 <html>
   <head>
     <title>Form A</title>
-    <link rel="stylesheet" href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css"/>
+    <link
+      rel="stylesheet"
+      href="bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #222;
+        color: #fff;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        background-color: #333;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 50px;
+      }
+
+      h1,
+      h2 {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .form-control {
+        background-color: #444;
+        border-color: #66c9f7;
+        color: #fff;
+      }
+
+      .btn-primary {
+        background-color: #66c9f7;
+        border-color: #66c9f7;
+      }
+
+      .btn-primary:hover {
+        background-color: #66f7d8;
+        border-color: #66f7d8;
+      }
+
+      #result {
+        display: none;
+        margin-top: 50px;
+      }
+
+      table {
+        margin-top: 20px;
+        color: #fff;
+      }
+
+      th {
+        color: #66c9f7;
+      }
+
+      td {
+        color: #fff;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <h1>Form A</h1>
+      <h1>TEXT REPEATER</h1>
       <form id="myForm">
         <div class="mb-3">
-          <label for="numberInput" class="form-label">Angka:</label>
+          <label for="numberInput" class="form-label">Count Repeat</label>
           <input type="number" class="form-control" id="numberInput" required />
         </div>
         <div class="mb-3">
-          <label for="textInput" class="form-label">Teks:</label>
+          <label for="textInput" class="form-label">Text</label>
           <input type="text" class="form-control" id="textInput" required />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" ba>Submit</button>
       </form>
-      <div id="result" style="display: none;">
-        <h2>Response:</h2>
+      <div id="result">
+        <h2>Result</h2>
         <table class="table">
           <thead>
             <tr>
               <th>No.</th>
-              <th>Teks</th>
+              <th>Text</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
         </table>
       </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="script.js"></script>
     <script>
       $(document).ready(function () {
         $("#myForm").submit(function (e) {
           e.preventDefault();
+
           var number = $("#numberInput").val();
           var text = $("#textInput").val();
+
           $.ajax({
             url: "B.php",
             method: "POST",
@@ -47,14 +107,15 @@
             success: function (response) {
               var tableBody = $("#tableBody");
               tableBody.empty();
+
               $.each(response, function (index, item) {
-                var row = $("<tr>").hide();
+                var row = $("<tr>");
                 row.append($("<td>").text(index + 1));
                 row.append($("<td>").text(item));
                 tableBody.append(row);
-                row.fadeIn("slow");
               });
-              $("#result").fadeIn();
+
+              $("#result").slideDown();
             },
           });
         });
